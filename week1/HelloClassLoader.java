@@ -1,18 +1,20 @@
+package com.geekbang.geekbangtest;
+
 import java.io.Closeable;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Method;
-//import java.util.Base64;
+import java.util.Base64;
 
-public class HelloClassLoader extends ClassLoader{
-	public static void main(String[] args) throws Exception {
+public class HelloClassLoader  extends ClassLoader{
+    public static void main(String[] args) throws Exception {
         // 相关参数
         final String className = "Hello";
         final String methodName = "hello";
         // 创建类加载器
-        ClassLoader classLoader = new XlassLoader();
+        ClassLoader classLoader = new HelloClassLoader();
         // 加载相应的类
-        Class<?> clazz = classLoader.loadClass(className);
+        Class<?> clazz = ((HelloClassLoader) classLoader).findClass(className);
         // 看看里面有些什么方法
         for (Method m : clazz.getDeclaredMethods()) {
             System.out.println(clazz.getSimpleName() + "." + m.getName());
@@ -24,16 +26,7 @@ public class HelloClassLoader extends ClassLoader{
         method.invoke(instance);
     }
 
-	@Override
-	public Class<?> findClass(String name) throws ClassNotFoundException{
-		String helloBase64 = "yv66vgAAADQAHAoABgAOCQAPABAIABEKABIAEwcAFAcAFQEABjxpbml0PgEAAygpVgEABENvZGUBAA9MaW5lTnVtYmVyVGFibGUBAAg8Y2xpbml0PgEAClNvdXJjZUZpbGUBAApIZWxsby5qYXZhDAAHAAgHABYMABcAGAEAFkhlbGxvIENsYXNzIEluaXRpYWxpemQHABkMABoAGwEABUhlbGxvAQAQamF2YS9sYW5nL09iamVjdAEAEGphdmEvbGFuZy9TeXN0ZW0BAANvdXQBABVMamF2YS9pby9QcmludFN0cmVhbTsBABNqYXZhL2lvL1ByaW50U3RyZWFtAQAHcHJpbnRsbgEAFShMamF2YS9sYW5nL1N0cmluZzspVgAhAAUABgAAAAAAAgABAAcACAABAAkAAAAdAAEAAQAAAAUqtwABsQAAAAEACgAAAAYAAQAAAAEACAALAAgAAQAJAAAAJQACAAAAAAAJsgACEgO2AASxAAAAAQAKAAAACgACAAAAAwAIAAQAAQAMAAAAAgAN";
-
-		byte[] bytes = decode(helloBase64);
-
-		return defineClass(name,bytes,0,bytes.length);
-	}
-
-	@Override
+    @Override
     protected Class<?> findClass(String name) throws ClassNotFoundException {
         // 如果支持包名, 则需要进行路径转换
         String resourcePath = name.replace(".", "/");
@@ -57,11 +50,16 @@ public class HelloClassLoader extends ClassLoader{
         }
     }
 
-	public byte[] decode(String base64){
-		return Base64.getDecoder().decode(base64);
-	}
+    // 解码
+    private static byte[] decode(byte[] byteArray) {
+        byte[] targetArray = new byte[byteArray.length];
+        for (int i = 0; i < byteArray.length; i++) {
+            targetArray[i] = (byte) (255 - byteArray[i]);
+        }
+        return targetArray;
+    }
 
-	// 关闭
+    // 关闭
     private static void close(Closeable res) {
         if (null != res) {
             try {
@@ -73,4 +71,3 @@ public class HelloClassLoader extends ClassLoader{
     }
 
 }
-
