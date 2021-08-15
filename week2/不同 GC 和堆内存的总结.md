@@ -73,7 +73,7 @@ System.out.println("执行结束!共生成对象次数:" + counter.longValue());
 
 # 三、测试过程&结果
 
-##1、串行GC(SerialGC)
+## 1、串行GC(SerialGC)
 ### 1.1、分析
 **java -XX:+UseSerialGC -Xms128m -Xmx128m -XX:+PrintGCDetails GCLogAnalysis**
 
