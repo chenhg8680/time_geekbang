@@ -1,5 +1,3 @@
-[TOC]
-
 # 一、测试代码
 ```java
 import java.util.Random;
