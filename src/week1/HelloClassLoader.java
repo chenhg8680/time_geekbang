@@ -1,4 +1,4 @@
-package com.geekbang.geekbangtest;
+package week1;
 
 import java.io.Closeable;
 import java.io.IOException;

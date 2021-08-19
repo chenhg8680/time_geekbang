@@ -1,3 +1,5 @@
+package week2;
+
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.ServerSocket;
@@ -7,7 +9,7 @@ import java.util.concurrent.Executors;
 
 // 创建了一个固定大小的线程池处理请求
 class HttpServer{
-    public static void main(String[] args) throws IOException{
+    public static void main(String[] args) throws IOException {
         ExecutorService executorService = Executors.newFixedThreadPool(
                 Runtime.getRuntime().availableProcessors() * 4);
         final ServerSocket serverSocket = new ServerSocket(8080);
